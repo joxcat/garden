@@ -73,34 +73,55 @@ Réaliser d'une part un simulateur d'incendie permettant la création, le suivi 
 	- TTL du capteur (60s par défaut ?)
 	- Distance en hop avec le relai
 	- Charge du capteur / relai (nombre de capteurs connectés)
-	- 
+	- Timestamp dernière MAJ
+	- Charge du capteur
 
 ### Proto radio / UART
 Objectifs : Mesh, résistance aux interférences, check is alive
-Les broadcast physiques ne sont pas repartagés
-Les broadcast logiques sont repartagés
+- Les broadcast physiques ne sont pas repartagés
+- Les broadcast logiques sont repartagés
+- Soft max 125 de charge / device (avec saturation possible)
+
 
 ### Découpage trame
 > https://lancaster-university.github.io/microbit-docs/ubit/radio/#capabilities
 > Typically 32 bytes, but reconfigurable in code up to 1024 bytes.
+> 4 trames stockées en RAM (16KB de RAM)
 
+Here : [landcaster-university/microbit-dal/inc/drivers/MicroBitRadio.h#L68](https://github.com/lancaster-university/microbit-dal/blob/602153e9199c28c08fd2561ce7b43bf64e9e7394/inc/drivers/MicroBitRadio.h#L68)
+
+### Trame statique
+- **Une évolution possible serait de faire une trame de taille dynamique pour diminuer la saturation réseau**
+| Taille en bits | Nom                     | Justification                                                                               |
+| -------------- | ----------------------- | ------------------------------------------------------------------------------------------- |
+| 8              | Commande de trame       | 256 commandes différentes est largement suffisant                                           |
+| 8              | Nombre de hop parcourus | 125 machines max passant par un microbit, donc aucune chance d'atteindre 256                |
+| 32             | Adresse source          | Adresse physique de taille 32bits                                                           |
+| 32             | Adresse destination     | Adresse physique de taille 32bits                                                           |
+| 32             | Timestamp               | Unix timestamp en u32, viable jusqu'à 2106. D'ici la les microbit v1 ne fonctionneront plus |
+| 8              | Partie de la requête    | 1 -> 255 (0 = Requête non partitionnée)                                                     |
+| 8              | Nombre de parties       | 1 -> 255                                                                                    |
+| 1912           | Donnée                  | $(255 * 8) - (8 * 4 + 32 * 3) = 1912$                                                                                             |
 
 ### Différentes requêtes
 
-| Request ID | Request Abbrv | Connection           | Ident               | Description                                            |
-| ---------- | ------------- | -------------------- | ------------------- | ------------------------------------------------------ |
-| 0          | `HELOP`       | Broadcast            | Physical            | Utilisé pour découvrir l'état initial du réseau local  |
-| 1          | `OLEHP`       | Targeted             | Logical => Physical | Partage initial de la table de machines                |
-| 2          | `IDENT`       | Targeted             | Physical => Logical | Demande au manager de mesh un identifiant de mesh      |
-| 3          | `TNEDI`       | Targeted             | Logical => Physical | Assigne un identifiant de mesh                         |
-| 4          | `TRUSTB`      | Broadcast (depth -1) | Logical             | Partage la clef publique du manager                    |
-| 5          | `TRUSTT`      | Targeted             | Logical => Logical  | Partage la clef publique de la machine                 |
-| 6          | `HELOL`       | Broadcast (depth 1)  | Logical             | Met a jour de manière forcée la table des machines     |
-| 7          | `OLEHL`       | Targeted             | Logical => Logical  | Partage de la table de machines si adresse est connue  |
-| 8          | `PUSH`        | Targeted             | Logical => Logical  | Envoie une mise à jour d'un capteur                    |
-| 9          | `PUSH_ACK`    | Targeted             | Logical => Logical  | Confirme que les données ont correctement été envoyées |
-| 10         | `ADENY`       | Targeted             | Logical => Physical | Accès non autorisé                                    |
-| 11         | `UDENY`       | Targeted             | Logical => Logical  | Inconnu dans la table d'identifiants                   |
+| Request ID | Request Abbrv | Connection           | Ident               | Description                                            | Champs             |
+| ---------- | ------------- | -------------------- | ------------------- | ------------------------------------------------------ | ------------------ |
+| 0          | `HELOP`       | Broadcast            | Physical            | Utilisé pour découvrir l'état initial du réseau local  |                    |
+| 1          | `OLEHP`       | Targeted             | Logical => Physical | Partage initial de la table de machines                | Table des machines |
+| 2          | `IDENT`       | Targeted             | Physical => Logical | Demande au manager de mesh un identifiant de mesh      | @Physique          |
+| 3          | `TNEDI`       | Targeted             | Logical => Physical | Assigne un identifiant de mesh                         | @Phy, @Mesh        |
+| 4          | `TRUSTB`      | Broadcast (depth -1) | Logical             | Partage la clef publique du manager                    | pubkey             |
+| 5          | `TRUSTT`      | Targeted             | Logical => Logical  | Partage la clef publique de la machine                 | pubkey             |
+| 6          | `HELOL`       | Broadcast (depth 1)  | Logical             | Met a jour de manière forcée la table des machines     |                    |
+| 7          | `OLEHL`       | Targeted             | Logical => Logical  | Partage de la table de machines si adresse est connue  | Table des machines |
+| 8          | `PUSH`        | Targeted             | Logical => Logical  | Envoie une mise à jour d'un capteur                    | Valeur capteur     |
+| 9          | `PUSH_ACK`    | Targeted             | Logical => Logical  | Confirme que les données ont correctement été envoyées | Capteur req ID     |
+| 10         | `ADENY`       | Targeted             | Logical => Physical | Accès non autorisé                                     | Capteur req ID     |
+| 11         | `UDENY`       | Targeted             | Logical => Logical  | Inconnu dans la table d'identifiants                   | Capteur req ID     |
+| 12         | `ADD`         | Broadcast            | Logical             | Broadcast de la machine dans le réseau                 | Info machine       |
+| 13         | `DEL`         | Broadcast            | Logical             | Perte d'une machine dans le réseau                     | Adresse machine    |
+
 
 #### Chiffrement des requêtes
 | Request Abbrv | Partie chiffrée   |
