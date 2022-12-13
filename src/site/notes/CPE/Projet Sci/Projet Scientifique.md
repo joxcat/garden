@@ -63,7 +63,7 @@ Réaliser d'une part un simulateur d'incendie permettant la création, le suivi 
 ### Trust on first use & chiffrement
 - Curve25519  => Clé 128bits
 - C++: [github:msotoodeh/curve25519](https://github.com/msotoodeh/curve25519)
-- <!-- Rust: [github:dalek-cryptography/curve25519-dalek](https://github.com/dalek-cryptography/curve25519-dalek) -->
+<!-- - Rust: [github:dalek-cryptography/curve25519-dalek](https://github.com/dalek-cryptography/curve25519-dalek) -->
 
 #### Données réseau capteur
 - Etat du capteur
