@@ -150,6 +150,9 @@ Génération des diagrammes avec python:
 - https://kroki.io/<diagtype>/<svg/png/pdf>/<base64 renvoyée par python>
 -->
 <style>
+img {
+  border-radius: 2px;
+}
 img[alt="Diag"] {
   background-color: white;
 }
