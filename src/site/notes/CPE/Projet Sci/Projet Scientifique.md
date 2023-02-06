@@ -5,20 +5,6 @@
 
 #CPE 
 
-<style>
-table {
-  overflow-y: auto;
-  max-width: 100%;
-  display: block;
-}
-img {
-  border-radius: 2px;
-	}
-img[alt="Diag"] {
-  background-color: white;
-}
-</style>
-
 # Objectifs
 Réaliser d'une part un simulateur d'incendie permettant la création, le suivi et la propagation de feux de différents types (localisés sur une carte), et d'autre part de créer un dispositif de gestion de services d'urgences permettant, à partir d'informations collectées par des capteurs, de déployer et gérer les dispositifs adaptés pour éteindre les incendies. 
 
@@ -36,7 +22,7 @@ Réaliser d'une part un simulateur d'incendie permettant la création, le suivi 
 - [x] TD: Présentation conception logicielle. **Diagramme de classe / séquence** et Schéma BD 📅 2022-12-13 ✅ 2022-12-14
 - [x] TD: Présentation / démo chaîne IOT 📅 2023-01-04 ✅ 2023-01-05
 	- [x] Démo collecte, envoi et réception des données des feux dans la ville ainsi que génération d'appel REST.
-- [ ] TD: Soutenance + démos finales 📅 2023-01-17
+- [x] TD: Soutenance + démos finales 📅 2023-01-17 ✅ 2023-01-23
 <!--
 ## Pourquoi du Rust en IOT est pertinent ?
 - Support aisé de nouvelles plateformes si la target est supportée (no_std)
