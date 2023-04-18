@@ -8,5 +8,4 @@
 
 # CPE
 - Projet scientifique S4 : [[cpe/Projet Sci/Projet Scientifique\|Projet Scientifique]]
-- Robot TurtleBot TP [[journal/2023-04-05\|2023-04-05]] => TP 1 découverte
 - Drone Bebop 2 => [[cpe/ROB2/Projet Bebop 2\|Projet Bebop 2]]
