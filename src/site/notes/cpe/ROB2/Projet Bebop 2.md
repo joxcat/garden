@@ -54,12 +54,15 @@ Topics: [[CPE\|CPE]], [[CPE ROB2\|CPE ROB2]]
 Il faut le plugin `plot` et le topic à utiliser est `/bebop/states/ardrone3/PilotingState/AltitudeChanged`.
 
 # Question 5 : Proposez une spécification de commande de votre drone depuis le Joystick
-| Bouton      | Commande  |
-| ----------- | --------- |
-| LT          | -Throttle |
-| RT          | +Throttle |
-| Arrow Left  | +Yaw      |
-| Arrow Right | -Yaw      |
+| Bouton           | Commande  |
+| ---------------- | --------- |
+| LT               | -Throttle |
+| RT               | +Throttle |
+| Arrow Left       | +Yaw      |
+| Arrow Right      | -Yaw      |
+| Bouton du milieu | Reset     |
+| Start            | Takeoff   |
+| Back             | Land      |
 
 ## Joystick droit
 | Position       | Commande      |
