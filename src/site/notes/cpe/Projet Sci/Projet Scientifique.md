@@ -1,9 +1,9 @@
 ---
-{"dg-publish":true,"permalink":"/cpe/projet-sci/projet-scientifique/"}
+{"dg-publish":true,"permalink":"/cpe/projet-sci/projet-scientifique/","tags":["EverGreen"]}
 ---
 
 
-Tags: [[CPE\|CPE]]
+Topics: [[CPE\|CPE]]
 
 # Objectifs
 Réaliser d'une part un simulateur d'incendie permettant la création, le suivi et la propagation de feux de différents types (localisés sur une carte), et d'autre part de créer un dispositif de gestion de services d'urgences permettant, à partir d'informations collectées par des capteurs, de déployer et gérer les dispositifs adaptés pour éteindre les incendies. 
